@@ -5,13 +5,14 @@
 ! function(window, angular, undefined) {
     'use strict';
 
-    var localStorageApp = angular.module('localStorageApp', []);
+    var localStorageApp = angular.module('localStorage', []);
 
-    localStorageApp.provider('localStorageService', function() {
+    localStorageApp.provider('$localStorage', function() {
 
         this.prefix = '__';
         this.timeline = 3600; //seconds
 
+        //Set prefix for key with domain
         this.setPrefix = function(prefix) {
             if (prefix.substr(0) !== '_') {
                 this.prefix = !!prefix ? '__' + prefix : '';
@@ -19,6 +20,7 @@
             return this;
         };
 
+        //Set timeline for key.Default is 60 mins.
         this.setStorageTimeline = function(timeline) {
             this.timeline = timeline;
             return this;
@@ -33,10 +35,6 @@
 
             var isValidObj = function(obj) {
                 if (angular.isUndefined(obj)) return true;
-                if (obj == null) return true;
-                if (obj.length > 0) {
-                    return false;
-                }
                 if (obj == null) return true;
                 if (obj.length > 0) return false;
                 if (obj.length === 0) return true;
@@ -64,6 +62,7 @@
                 return prefix + key;
             };
 
+            //Set the LocalStorage with key and value
             var setToLocalStorage = function(key, obj) {
                 var storedTime = new Date();
 
@@ -80,6 +79,7 @@
                 return false;
             };
 
+            //Get the value from LocalStorage using key
             var getFromLocalStorage = function(key) {
                 try {
                     key = prefixKey(key);
@@ -113,6 +113,7 @@
 
             };
 
+            //Remove the Item from LocalStorage
             var removeLocalStorage = function(key) {
                 key = prefixKey(key);
                 localStorage.removeItem(key);
@@ -131,14 +132,17 @@
                 return true;
             };
 
+            //Execute the callback if Item is added to LocalStorage
             var addLocalstorageListener = function(callback) {
                 window.addEventListener('storage', callback, false);
             };
 
+            //Execute the callback if Item is removed from LocalStorage
             var removeLocalstorageListener = function(callback) {
                 window.removeEventListener('storage', callback, false);
             };
 
+            //Get the lenght of total keys stored in LocalStorage with domain name
             var lengthOfLocalStorage = function() {
                 var count = 0;
                 for (var i = 0; i < localStorage.length; i++) {
