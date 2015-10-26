@@ -52,7 +52,7 @@
                 var retrivedTime = current_time.getTime();
                 var time_difference = Math.floor((retrivedTime - storedTime) / 1000);
                 if (time_difference > timeline) {
-                    self.removeLocalStorage(key);
+                    self.removeKeyFromLocalStorage(key);
                 } else {
                     return retrievedItem;
                 }
@@ -93,7 +93,7 @@
                     var parsedRetrivedItem = retrievedItem;
                     return parsedRetrivedItem;
                 } else {
-                    self.removeLocalStorage();
+                    removeKeyFromLocalStorage(key);
                 }
             };
 
@@ -108,13 +108,13 @@
                     var retrivedLocalStorage = checkExpiry(retrievedItem, key);
                     return retrivedLocalStorage;
                 } else {
-                    self.removeLocalStorage();
+                    removeKeyFromLocalStorage(key);
                 }
 
             };
 
             //Remove the Item from LocalStorage
-            var removeLocalStorage = function(key) {
+            var removeKeyFromLocalStorage = function(key) {
                 key = prefixKey(key);
                 localStorage.removeItem(key);
             };
@@ -156,7 +156,7 @@
             return {
                 set: setToLocalStorage,
                 get: getFromLocalStorage,
-                remove: removeFromLocalStorage,
+                removeOne: removeKeyFromLocalStorage,
                 removeAll: removeAllLocalStorage,
                 bind: addLocalstorageListener,
                 unbind: removeLocalstorageListener,
